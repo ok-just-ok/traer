@@ -36,6 +36,18 @@ class Tree:
         left, right = self.height(_from.left), self.height(_from.right)
         return 1 + max(left, right)
 
+    def min(self):
+        head = self.root
+        while head.left:
+            head = head.left
+        return head
+
+    def max(self):
+        head = self.root
+        while head.right:
+            head = head.right
+        return head
+
     def preorder(self, node):
         order = []
         if node:
@@ -63,16 +75,16 @@ class Tree:
 
 testdata = __import__('ngen').rand(10)
 akacja = Tree(testdata)
+print(sorted(testdata))
 
 print(
     f"testdata :: {testdata}\n",
     akacja.root,
     '\n',
     "height :: ", akacja.height(_from=akacja.root), '\n',
-    # "min :: ", akacja.min(), '\n',
-    # "max :: ", akacja.max(), '\n',
+    "min :: ", akacja.min(), '\n',
+    "max :: ", akacja.max(), '\n',
     f"preorder :: {akacja.preorder(akacja.root)}\n",
     f"inorder :: {akacja.inorder(akacja.root)}\n",
-    f"postorder :: {akacja.postorder(akacja.root)}\n",
-
+    f"postorder :: {akacja.postorder(akacja.root)}\n"
 )
