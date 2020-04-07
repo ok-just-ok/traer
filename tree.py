@@ -1,3 +1,5 @@
+from ngen import *
+
 HEAD = -1
 
 
@@ -9,6 +11,11 @@ class Node:
 
     def __repr__(self):
         return f"\x1b[1m{self.val}\x1b[0m[\x1b[31m{str(self.left)}\x1b[0m] \x1b[1m{self.val}\x1b[0m[\x1b[32m{str(self.right)}\x1b[0m]"
+
+
+class NotANode(Node):
+    def __init__(self, val):
+        self.__repr__ = lambda: f"No Node with value {val}"
 
 
 class Tree:
@@ -36,27 +43,44 @@ class Tree:
         left, right = self.height(_from.left), self.height(_from.right)
         return 1 + max(left, right)
 
-    def min(self):
-        head = self.root
+    def min(self, _from):
+        head = _from
         while head.left:
             head = head.left
         return head
 
-    def max(self):
-        head = self.root
+    def max(self, _from):
+        head = _from
         while head.right:
             head = head.right
         return head
 
+    def find(self, nodeKey):
+        head = self.root
+        while head:
+            print(head)
+            if nodeKey == head.val:
+                return head
+            if nodeKey < head.val:
+                head = head.left
+            elif nodeKey > head.val:
+                head = head.right
+        return None
 
-testdata = __import__('ngen').rand(10)
+    def pop(self, nodeKey):
+        pass
+
+
+testdata = rand(10)
 akacja = Tree(testdata)
 print(sorted(testdata))
 
 print(
-    akacja.root,
-    '\n',
+    ' ',
     "height :: ", akacja.height(_from=akacja.root), '\n',
-    "min :: ", akacja.min(), '\n',
-    "max :: ", akacja.max(), '\n',
+    "min :: ", akacja.min(_from=akacja.root), '\n',
+    "max :: ", akacja.max(_from=akacja.root), '\n',
+    "find :: ", akacja.find(*__import__('ngen').rand(1)), '\n',
+    "tre :: ", akacja.root, '\n',
+    "pop :: ", akacja.pop(int(input())).root, '\n',
 )
