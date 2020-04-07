@@ -14,11 +14,12 @@ class Node:
 
 
 class Tree:
-    def __init__(self, src):
-        self.root, src = Node(src[0]), [Node(val) for val in src[1:]]
-        [self.insert(n, self.root) for n in src]
+    def __init__(self):
+        self.root = None
 
     def insert(self, tail, head):
+        if not self.root:
+            self.root = tail
         if tail.val < head.val:
             if not head.left:
                 head.left = tail
@@ -90,17 +91,43 @@ class Tree:
         return order
 
 
-testdata = rand(10)
-akacja = Tree(testdata)
+class BSTTree(Tree):
+    def __init__(self, src):
+        self.root, src = Node(src[0]), [Node(val) for val in src[1:]]
+        [self.insert(n, self.root) for n in src]
+
+
+class AVLTree(Tree):
+    """docstring for AVLTree."""
+
+    def __init__(self, src):
+        super(AVLTree, self).__init__()
+        if src:
+            self.root = self.__construct(sorted(src))
+
+    def __construct(self, data) -> Node:
+        if data:
+            root = Node(data.pop((len(data) - 1) // 2))
+            root.left = self.__construct(data[:len(data) // 2])
+            root.right = self.__construct(data[len(data) // 2:])
+            if root.left:
+                root.left.parent = root
+            if root.right:
+                root.right.parent = root
+            return root
+
+
+testdata = sorted(rand(10))
 print(sorted(testdata))
+akacja = AVLTree(testdata)
 
 print(
     f"testdata :: {testdata}\n",
     akacja.root,
     '\n',
     "height :: ", akacja.height(_from=akacja.root), '\n',
-    "min :: ", akacja.min(_from=akacja.root), '\n',
-    "max :: ", akacja.max(_from=akacja.root), '\n',
+    "min :: ", akacja.min(_from=akacja.root).val, '\n',
+    "max :: ", akacja.max(_from=akacja.root).val, '\n',
     f"preorder :: {akacja.preorder(akacja.root)}\n",
     f"inorder :: {akacja.inorder(akacja.root)}\n",
     f"postorder :: {akacja.postorder(akacja.root)}\n"
