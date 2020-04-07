@@ -13,11 +13,6 @@ class Node:
         return f"\x1b[1m{self.val}\x1b[0m[\x1b[31m{str(self.left)}\x1b[0m] \x1b[1m{self.val}\x1b[0m[\x1b[32m{str(self.right)}\x1b[0m]"
 
 
-class NotANode(Node):
-    def __init__(self, val):
-        self.__repr__ = lambda: f"No Node with value {val}"
-
-
 class Tree:
     def __init__(self, src):
         self.root, src = Node(src[0]), [Node(val) for val in src[1:]]
@@ -104,8 +99,8 @@ print(
     akacja.root,
     '\n',
     "height :: ", akacja.height(_from=akacja.root), '\n',
-    "min :: ", akacja.min(), '\n',
-    "max :: ", akacja.max(), '\n',
+    "min :: ", akacja.min(_from=akacja.root), '\n',
+    "max :: ", akacja.max(_from=akacja.root), '\n',
     f"preorder :: {akacja.preorder(akacja.root)}\n",
     f"inorder :: {akacja.inorder(akacja.root)}\n",
     f"postorder :: {akacja.postorder(akacja.root)}\n"
