@@ -14,28 +14,34 @@ class Node:
 class Tree:
     def __init__(self, src):
         self.root, src = Node(src[0]), [Node(val) for val in src[1:]]
-        print(self.root, src)
-
-        for n in src:
-            self.insert(n, self.root)
-            print("hello")
+        [self.insert(n, self.root) for n in src]
 
     def insert(self, tail, head):
         if tail.val < head.val:
             if not head.left:
                 head.left = tail
+                head.left.up = head
             else:
                 self.insert(tail, head.left)
         else:
             if not head.right:
                 head.right = tail
+                head.right.up = head
             else:
                 self.insert(tail, head.right)
+
+    def height(self, _from):
+        if _from is None:
+            return 0
+        left, right = self.height(_from.left), self.height(_from.right)
+        return 1 + max(left, right)
 
 
 testdata = __import__('ngen').rand(10)
 akacja = Tree(testdata)
 
 print(
-    akacja.root
+    akacja.root,
+    '\n',
+    akacja.height(_from=akacja.root)
 )
