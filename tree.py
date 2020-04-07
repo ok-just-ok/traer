@@ -36,12 +36,27 @@ class Tree:
         left, right = self.height(_from.left), self.height(_from.right)
         return 1 + max(left, right)
 
+    def min(self):
+        head = self.root
+        while head.left:
+            head = head.left
+        return head
+
+    def max(self):
+        head = self.root
+        while head.right:
+            head = head.right
+        return head
+
 
 testdata = __import__('ngen').rand(10)
 akacja = Tree(testdata)
+print(sorted(testdata))
 
 print(
     akacja.root,
     '\n',
-    akacja.height(_from=akacja.root)
+    "height :: ", akacja.height(_from=akacja.root), '\n',
+    "min :: ", akacja.min(), '\n',
+    "max :: ", akacja.max(), '\n',
 )
