@@ -36,12 +36,43 @@ class Tree:
         left, right = self.height(_from.left), self.height(_from.right)
         return 1 + max(left, right)
 
+    def preorder(self, node):
+        order = []
+        if node:
+            order.append(node.val)
+            order.extend(self.preorder(node.left))
+            order.extend(self.preorder(node.right))
+        return order
+
+    def inorder(self, node):
+        order = []
+        if node:
+            order.extend(self.inorder(node.left))
+            order.append(node.val)
+            order.extend(self.inorder(node.right))
+        return order
+
+    def postorder(self, node):
+        order = []
+        if node:
+            order.extend(self.postorder(node.left))
+            order.extend(self.postorder(node.right))
+            order.append(node.val)
+        return order
+
 
 testdata = __import__('ngen').rand(10)
 akacja = Tree(testdata)
 
 print(
+    f"testdata :: {testdata}\n",
     akacja.root,
     '\n',
-    akacja.height(_from=akacja.root)
+    "height :: ", akacja.height(_from=akacja.root), '\n',
+    # "min :: ", akacja.min(), '\n',
+    # "max :: ", akacja.max(), '\n',
+    f"preorder :: {akacja.preorder(akacja.root)}\n",
+    f"inorder :: {akacja.inorder(akacja.root)}\n",
+    f"postorder :: {akacja.postorder(akacja.root)}\n",
+
 )
