@@ -1,4 +1,5 @@
 from ngen import *
+from math import pow, floor, log
 
 HEAD = -1
 
@@ -178,6 +179,66 @@ class Tree:
             self.remove(x)
             print("deleted: ", el)
             print("node: ", node)
+
+    def __rotate_right(self, top: Node):
+        node = top.left
+        top.left = node.right
+        if node.right:
+            node.right.parent = top
+        node.parent = top.parent
+        if not top.parent:
+            self.root = node
+        elif top == top.parent.right:
+            top.parent.right = node
+        else:
+            top.parent.left = node
+        node.right = top
+        top.parent = node
+
+    def __rotate_left(self, top: Node):
+        node = top.right
+        top.right = node.left
+
+        if node.left:
+            node.left.parent = top
+
+        node.parent = top.parent
+        if not top.parent:
+            self.root = node
+        elif top is top.parent.left:
+            top.parent.left = node
+        elif top is top.parent.right:
+            top.parent.right = node
+        node.left = top
+        top.parent = node
+
+    def __make_rotations(self, x):
+        top = self.root
+        for i in range(x):
+            if top:
+                self.__rotate_left(top)
+                if top.parent:
+                    top = top.parent.right
+
+    def __create_spine(self):
+        parent = self.root
+        while parent:
+            left = parent.left
+            if left:
+                self.__rotate_right(parent)
+                parent = left
+            else:
+                parent = parent.right
+
+    def balance(self):
+        root, n = self.root, self.count()
+        m = int(pow(2, floor(log(n + 1, 2))) - 1)
+
+        self.__create_spine()
+        self.__make_rotations(n - m)
+        while m > 1:
+            m = m // 2
+            self.__make_rotations(m)
 
 
 class BSTTree(Tree):
