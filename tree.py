@@ -232,7 +232,7 @@ class Tree:
                 parent = parent.right
 
     def balance(self):
-        root, n = self.root, self.count()
+        root, n = self.root, self.height(_from=self.root)
         m = int(pow(2, floor(log(n + 1, 2))) - 1)
 
         self.__create_spine()
@@ -268,27 +268,27 @@ class AVLTree(Tree):
             return root
 
 
-testdata = sorted(rand(10))
-print(sorted(testdata))
-akacja = AVLTree(testdata)
-# akacja = BSTTree(testdata)
-print(
-    f"testdata :: {testdata}\n",
-    akacja.root,
-    '\n',
-    "height :: ", akacja.height(_from=akacja.root), '\n',
-    "min :: ", akacja.min(_from=akacja.root).val, '\n',
-    "max :: ", akacja.max(_from=akacja.root).val, '\n',
-    "path to min :: ", akacja.path_to_min(), '\n',
-    "path to max :: ", akacja.path_to_max(), '\n',
-    f"preorder :: {akacja.preorder(akacja.root)}\n",
-    f"inorder :: {akacja.inorder(akacja.root)}\n",
-    f"postorder :: {akacja.postorder(akacja.root)}\n"
-    f"postorder delete :: {akacja.delete_by_postorder(akacja.root)}\n"
+# testdata = sorted(rand(10))
+# print(sorted(testdata))
+# akacja = AVLTree(testdata)
+# # akacja = BSTTree(testdata)
+# print(
+#     f"testdata :: {testdata}\n",
+#     akacja.root,
+#     '\n',
+#     "height :: ", akacja.height(_from=akacja.root), '\n',
+#     "min :: ", akacja.min(_from=akacja.root).val, '\n',
+#     "max :: ", akacja.max(_from=akacja.root).val, '\n',
+#     "path to min :: ", akacja.path_to_min(), '\n',
+#     "path to max :: ", akacja.path_to_max(), '\n',
+#     f"preorder :: {akacja.preorder(akacja.root)}\n",
+#     f"inorder :: {akacja.inorder(akacja.root)}\n",
+#     f"postorder :: {akacja.postorder(akacja.root)}\n"
+#     f"postorder delete :: {akacja.delete_by_postorder(akacja.root)}\n"
+#
+# )
 
-)
 
-
-# usuwanie wybranych elementow:
-akacja.delete()
-print("Drzewo po usunieciu: ", akacja.root)
+# # usuwanie wybranych elementow:
+# akacja.delete()
+# print("Drzewo po usunieciu: ", akacja.root)
