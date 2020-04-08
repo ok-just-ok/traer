@@ -7,9 +7,13 @@ __import__('sys').setrecursionlimit(20000)
 
 
 def tester(constructor):
-    testValues = []
-    testRanges = sorted([int(10 * 5 ** (i / 2)) for i in range(10)])
-    testRanges = [10, 100, 500, 1000, 2500, 5000, 7000, 9000, 12000]
+    loggedMemo = []
+    createdMemo = []
+    sproutedMemo = []
+    balancedMemo = []
+    testRanges = [10, 100, 500, 1000, 2500, 5000, 7000, 9000, 12000, 12500]
+    testRanges = [10, 1000, 10000, 100000, 125000,
+                  250000, 375000, 500000, 750000, 1000000]
 
     for r in testRanges:
 
@@ -18,6 +22,7 @@ def tester(constructor):
         start = time.time()
 
         akacja = constructor(testData)
+        # print(akacja.root, file=__import__('sys').stderr)
 
         created = time.time()
 
@@ -29,12 +34,22 @@ def tester(constructor):
 
         logged = time.time()
 
-        print(f"\n\x1b[1m{r}\x1b[0m")
-        print(f"created   {(created-start)}")
-        print(f"sprouted  {(sprouted-created)}")
-        print(f"logged    {(logged-sprouted)}")
+        balance = akacja.balance()
+
+        balanced = time.time()
+
+        createdMemo.append(str(created - start))
+        sproutedMemo.append(str(sprouted - created))
+        loggedMemo.append(str(logged - sprouted))
+        balancedMemo.append(str(balanced - logged))
+
+    print("tested N;", '; '.join([str(x) for x in testRanges]))
+    print("create;", '; '.join(createdMemo))
+    print("min finding;", '; '.join(sproutedMemo))
+    print("postorder display;", '; '.join(loggedMemo))
+    print("balancing;", '; '.join(balancedMemo))
 
 
 tester(
-    constructor=BSTTree
+    constructor=AVLTree
 )
