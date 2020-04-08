@@ -17,21 +17,22 @@ class Tree:
     def __init__(self):
         self.root = None
 
-    def insert(self, tail, head):
+    def insert(self, new):
         if not self.root:
-            self.root = tail
-        if tail.val < head.val:
-            if not head.left:
-                head.left = tail
-                head.left.up = head
-            else:
-                self.insert(tail, head.left)
+            self.root = Node(value)
         else:
-            if not head.right:
-                head.right = tail
-                head.right.up = head
+            node = self.root
+            parent = None
+            while node:
+                parent = node
+                node = node.left if new.val < node.val else node.right
+
+            if new.val < parent.val:
+                parent.left = new
+                parent.left.parent = parent
             else:
-                self.insert(tail, head.right)
+                parent.right = new
+                parent.right.parent = parent
 
     def height(self, _from):
         if _from is None:
@@ -94,7 +95,7 @@ class Tree:
 class BSTTree(Tree):
     def __init__(self, src):
         self.root, src = Node(src[0]), [Node(val) for val in src[1:]]
-        [self.insert(n, self.root) for n in src]
+        [self.insert(n) for n in src]
 
 
 class AVLTree(Tree):
