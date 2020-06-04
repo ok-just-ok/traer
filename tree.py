@@ -1,5 +1,17 @@
-from ngen import *
 from math import pow, floor, log
+from random import *
+
+
+def rand(n):
+    return [randint(1, 100) for i in range(n)]
+
+
+def test_data(n):
+    tab = [randint(1, 100)]
+    for i in range(1, n):
+        tab.append(tab[i - 1] + randint(1, 10))
+    return tab[::-1]
+
 
 HEAD = -1
 
@@ -115,7 +127,7 @@ class Tree:
             new_node = node.right
             while new_node.left:
                 new_node = new_node.left
-            node.value = new_node.val
+            node.val = new_node.val
             self.remove(new_node)
 
     def delete(self):
@@ -289,101 +301,103 @@ class AVLTree(Tree):
 # )
 
 # menu
-
-while True:
-    testdata = rand(10)
-    print("Podaj ciag wejsciowy (po spacji), lub wyjdz(0)")
-    try:
-        given = list(map(int, input().split()))
-    except ValueError:
-        print("nalezy podac liczby")
-        continue
-    if len(given) == 1 and int(given[0]) == 0:
-        break
-    print("wybierz rodzaj drzewa:")
-    print("1. BST")
-    print("2. AVL")
-    rodzaj = input()
-    if int(rodzaj) == 1:
-        akacja = BSTTree(testdata)
-        dab = BSTTree(given)
-    elif int(rodzaj) == 2:
-        akacja = AVLTree(testdata)
-        dab = AVLTree(given)
-    else:
-        print("Podaj nr 1 albo 2")
-        continue
-
-    print("Twoj ciag wejsciowy: ", given)
-    print("\t drzewo: ", dab.root)
-    print("Wygenerowany ciag wejsciowy: ", testdata,
-          "posortowany: ", sorted(testdata))
-    print("\t drzewo: ", akacja.root)
-
+if __name__ == '__main__':
     while True:
-        print("Wybierz nr zadania lub wyjdz(0): ")
-        print("1. wyszukanie w drzewie elementu o najmniejszej wartosci i wypisanie ścieżki poszukiwania (od korzenia do elementu szukanego)")
-        print("2. wyszukanie w drzewie elementu o i największej wartości i wypisanie ścieżki poszukiwania (od korzenia do elementu szukanego)")
-        print("3.usunięcie elementu drzewa o wartości klucza podanej przez użytkownika")
-        print("4.wypisanie elementów drzewa w porzadku pre-order, in-order oraz post-order")
-        print("5. usunięcie całego drzewa element po elemencie metodą post-order")
-        print("6. równoważenie drzewa przez rotacje (algorytm DSW).")
-        print("7. wysokosc drzewa")
-        task_nr = input()
+        testdata = test_data(10)
+        print("Podaj ciag wejsciowy (po spacji), lub wyjdz(0)")
         try:
-            task_nr = int(task_nr)
+            given = list(map(int, input().split()))
         except ValueError:
-            print("nalezy podac liczbe")
+            print("nalezy podac liczby")
             continue
-        if task_nr == 0:
+        if len(given) == 1 and int(given[0]) == 0:
             break
-        elif task_nr == 1:
-            print("Dla testowych danych: ")
-            print("min :: ", akacja.min(_from=akacja.root).val, '\n',)
-            print("path to min :: ", akacja.path_to_min(), '\n')
-            print("Dla twoich danych:")
-            print("min :: ", dab.min(_from=dab.root).val, '\n',)
-            print("path to min :: ", dab.path_to_min(), '\n')
-        elif task_nr == 2:
-            print("Dla testowych danych: ")
-            print("max :: ", akacja.max(_from=akacja.root).val, '\n',)
-            print("path to max :: ", akacja.path_to_max(), '\n')
-            print("Dla twoich danych: ")
-            print("max :: ", dab.max(_from=dab.root).val, '\n',)
-            print("path to max :: ", dab.path_to_max(), '\n')
-        elif task_nr == 3:
-            print("Dla testowych danych: ")
-            akacja.delete()
-            print("Drzewo po usunieciu: ", akacja.root)
-            print("Dla twoich danych: ")
-            dab.delete()
-            print("Drzewo po usunieciu: ", dab.root)
-        elif task_nr == 4:
-            print("Dla testowych danych: ")
-            print(f"preorder :: {akacja.preorder(akacja.root)}\n",
-                  f"inorder :: {akacja.inorder(akacja.root)}\n",
-                  f"postorder :: {akacja.postorder(akacja.root)}\n"
-                  )
-            print("Dla twoich danych: ")
-            print(f"preorder :: {dab.preorder(dab.root)}\n",
-                  f"inorder :: {dab.inorder(dab.root)}\n",
-                  f"postorder :: {dab.postorder(dab.root)}\n"
-                  )
-        elif task_nr == 5:
-            print("Dla testowych danych: ")
-            print(
-                f"postorder delete :: {akacja.delete_by_postorder(akacja.root)}")
-            print("Dla twoich danych: ")
-            print(f"postorder delete :: {dab.delete_by_postorder(dab.root)}")
-        elif task_nr == 6:
-            print("Dla testowych danych: ")
-            print(f"rotations :: {akacja.balance()}")
-            print("Dla twoich danych: ")
-            print(f"rotations :: {dab.balance()}")
-        elif task_nr == 7:
-            print("Dla testowych danych: ")
-            print("height :: ", akacja.height(_from=akacja.root), '\n',)
-            print("Dla twoich danych: ")
-            print("height :: ", dab.height(_from=dab.root), '\n',)
+        print("wybierz rodzaj drzewa:")
+        print("1. BST")
+        print("2. AVL")
+        rodzaj = input()
+        if int(rodzaj) == 1:
+            akacja = BSTTree(testdata)
+            dab = BSTTree(given)
+        elif int(rodzaj) == 2:
+            akacja = AVLTree(sorted(testdata)[::-1])
+            dab = AVLTree(given)
         else:
-            print("Nalezy podac nr od 0-7")
+            print("Podaj nr 1 albo 2")
+            continue
+
+        print("Twoj ciag wejsciowy: ", given)
+        print("\t drzewo: ", dab.root)
+        print("Wygenerowany ciag wejsciowy: ", testdata,
+              "posortowany: ", sorted(testdata))
+        print("\t drzewo: ", akacja.root)
+
+        while True:
+            print("Wybierz nr zadania lub wyjdz(0): ")
+            print("1. wyszukanie w drzewie elementu o najmniejszej wartosci i wypisanie ścieżki poszukiwania (od korzenia do elementu szukanego)")
+            print("2. wyszukanie w drzewie elementu o i największej wartości i wypisanie ścieżki poszukiwania (od korzenia do elementu szukanego)")
+            print("3.usunięcie elementu drzewa o wartości klucza podanej przez użytkownika")
+            print(
+                "4.wypisanie elementów drzewa w porzadku pre-order, in-order oraz post-order")
+            print("5. usunięcie całego drzewa element po elemencie metodą post-order")
+            print("6. równoważenie drzewa przez rotacje (algorytm DSW).")
+            print("7. wysokosc drzewa")
+            task_nr = input()
+            try:
+                task_nr = int(task_nr)
+            except ValueError:
+                print("nalezy podac liczbe")
+                continue
+            if task_nr == 0:
+                break
+            elif task_nr == 1:
+                print("Dla testowych danych: ")
+                print("min :: ", akacja.min(_from=akacja.root).val, '\n',)
+                print("path to min :: ", akacja.path_to_min(), '\n')
+                print("Dla twoich danych:")
+                print("min :: ", dab.min(_from=dab.root).val, '\n',)
+                print("path to min :: ", dab.path_to_min(), '\n')
+            elif task_nr == 2:
+                print("Dla testowych danych: ")
+                print("max :: ", akacja.max(_from=akacja.root).val, '\n',)
+                print("path to max :: ", akacja.path_to_max(), '\n')
+                print("Dla twoich danych: ")
+                print("max :: ", dab.max(_from=dab.root).val, '\n',)
+                print("path to max :: ", dab.path_to_max(), '\n')
+            elif task_nr == 3:
+                print("Dla testowych danych: ")
+                akacja.delete()
+                print("Drzewo po usunieciu: ", akacja.root)
+                print("Dla twoich danych: ")
+                dab.delete()
+                print("Drzewo po usunieciu: ", dab.root)
+            elif task_nr == 4:
+                print("Dla testowych danych: ")
+                print(f" preorder :: {akacja.preorder(akacja.root)}\n",
+                      f"inorder :: {akacja.inorder(akacja.root)}\n",
+                      f"postorder :: {akacja.postorder(akacja.root)}\n"
+                      )
+                print("Dla twoich danych: ")
+                print(f" preorder :: {dab.preorder(dab.root)}\n",
+                      f"inorder :: {dab.inorder(dab.root)}\n",
+                      f"postorder :: {dab.postorder(dab.root)}\n"
+                      )
+            elif task_nr == 5:
+                print("Dla testowych danych: ")
+                print(
+                    f"postorder delete :: {akacja.delete_by_postorder(akacja.root)}")
+                print("Dla twoich danych: ")
+                print(
+                    f"postorder delete :: {dab.delete_by_postorder(dab.root)}")
+            elif task_nr == 6:
+                print("Dla testowych danych: ")
+                print(f"rotations :: {akacja.balance()}")
+                print("Dla twoich danych: ")
+                print(f"rotations :: {dab.balance()}")
+            elif task_nr == 7:
+                print("Dla testowych danych: ")
+                print("height :: ", akacja.height(_from=akacja.root), '\n',)
+                print("Dla twoich danych: ")
+                print("height :: ", dab.height(_from=dab.root), '\n',)
+            else:
+                print("Nalezy podac nr od 0-7")
